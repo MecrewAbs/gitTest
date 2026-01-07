@@ -6,6 +6,7 @@ import (
 	"gitTest/storage"
 )
 
+//ggg
 func main() {
 	store := storage.NewStorage()
 
