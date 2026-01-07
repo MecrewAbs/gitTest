@@ -1,11 +1,47 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"gitTest/bins"
+	"gitTest/storage"
+)
+
+// gggsё
 
 func main() {
-	fmt.Println("hello world")
-	for i := 0; i < 10; i++ {
-		fmt.Println("Bye")
+	store := storage.NewStorage()
+
+	bin := bins.NewBin("mybin", false)
+	fmt.Println("Bin was created", bin)
+
+	bin.SetPrivate()
+	fmt.Println("Bin was set private", bin)
+
+	err := store.CreateBin(bin)
+	if err != nil {
+		fmt.Println("Saving error", err)
+		return
 	}
-	fmt.Println("bye world")
+	retrivedBin, err := store.LookUpBun("mybin")
+	if err != nil {
+		fmt.Println("LookUp error", err)
+		return
+	}
+	fmt.Println("LookUp Bun was returned", retrivedBin)
+
+	jsonStr, err := retrivedBin.ToJSON()
+	if err != nil {
+		fmt.Println("JSON error", err)
+		return
+	}
+	fmt.Println("JSON was returned", jsonStr)
+
+	newBin := &bins.Bin{}
+	err = newBin.FromJSON(jsonStr)
+	if err != nil {
+		fmt.Println("JSON error", err)
+		return
+	}
+	fmt.Println("JSON was returned", newBin)
+	fmt.Println("Bin list in the storage", store.ListBinNames())
 }
